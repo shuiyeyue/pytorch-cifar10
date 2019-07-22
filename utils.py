@@ -8,28 +8,28 @@ import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 
 def get_network(args, use_gpu=True):
-  """ return given network """
+  """ return given modelwork """
 
-  if args.net == 'vgg11':
+  if args.model == 'vgg11':
     from models.vgg import vgg11_bn
-    net = vgg11_bn()
-  elif args.net == 'vgg13':
+    model = vgg11_bn()
+  elif args.model == 'vgg13':
     from models.vgg import vgg13_bn
-    net = vgg13_bn()
-  elif args.net == 'vgg16':
+    model = vgg13_bn()
+  elif args.model == 'vgg16':
     from models.vgg import vgg16_bn
-    net = vgg16_bn()
-  elif args.net == 'vgg19':
+    model = vgg16_bn()
+  elif args.model == 'vgg19':
     from models.vgg import vgg19_bn
-    net = vgg19_bn
+    model = vgg19_bn
   else:
-    print("network is not supported.")
+    print("modelwork is not supported.")
     sys.exit()
   
   if use_gpu:
-    net = net.cuda()
+    model = model.cuda()
 
-  return net
+  return model
 
 
 def get_training_dataloder(mean, std, batch_size=16, num_works=2, shuffle=True):

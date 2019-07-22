@@ -70,7 +70,7 @@ def eval(model, datasets, criterion, epoch, writer):
 
 
 def main():
-    model = get_network(args.model, args.gpu)
+    model = get_network(args, args.gpu)
     
     train_datasets = get_training_dataloder(
         settings.CIFAR100_TRAIN_MEAN,
