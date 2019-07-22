@@ -30,15 +30,15 @@ class VGG(nn.Module):
     def _init_weight(self):
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
-                n = m.kernel_size[0] * m.kernel_size[1] * m.output_channels
-                m.weights.data.normal_(0, math.sqrt(2. / n))
+                n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+                m.weight.data.normal_(0, math.sqrt(2. / n))
                 if not m.bias is None:
                     m.bias.data.zero_()
             elif isinstance(m, nn.Linear):
-                m.weights.data.normal_(0, 0.01)
+                m.weight.data.normal_(0, 0.01)
                 m.bias.data.zero_()
-            elif isinstance(m. nn.BatchNorm2d):
-                m.weights.data.fill_(1)
+            elif isinstance(m,  nn.BatchNorm2d):
+                m.weight.data.fill_(1)
                 m.bias.data.zero_()
 
     def _make_layers(self, cfg):
