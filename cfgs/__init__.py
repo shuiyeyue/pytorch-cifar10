@@ -1,7 +1,7 @@
 """ dynamically load settings
 author baiyu
 """
-import global_settings as settings
+import cfgs.global_settings as settings
 
 class Settings:
     def __init__(self, settings):

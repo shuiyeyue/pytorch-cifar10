@@ -21,7 +21,7 @@ def get_network(args, use_gpu=True):
     model = vgg16_bn()
   elif args.model == 'vgg19':
     from models.vgg import vgg19_bn
-    model = vgg19_bn
+    model = vgg19_bn()
   else:
     print("modelwork is not supported.")
     sys.exit()
