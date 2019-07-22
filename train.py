@@ -15,7 +15,7 @@ from tensorboardX import SummaryWriter
 from cfgs import settings
 from utils import get_network, get_test_dataloder, get_training_dataloder, WarmUpLR
 
-def train(model, datasets, optimizer, criterion, epoch, writer, lr_scheduler, warmup_scheduler):
+def train(model, datasets, optimizer, criterion, epoch, writer, warmup_scheduler):
     
     model.train()
     for batch_index, (images, labels) in enumerate(datasets):
@@ -66,6 +66,8 @@ def eval(model, datasets, criterion, epoch, writer):
     writer.add_scalar('Test/loss', test_loss / len(datasets), epoch)
     writer.add_scalar('Test/Acc', correct / len(datasets), epoch)
 
+    return correct.float() / len(datasets)
+
 
 def main():
     model = get_network(args.model, args.gpu)
@@ -85,10 +87,39 @@ def main():
     )
 
     criterion = nn.CrossEntropyLoss()
+    optimizier = optim.SGD(model.parameters(), lr=args.lr, momentum=0.9, weight_decay=5e-4)
+    train_sheduler = optim.lr_scheduler.MultiStepLR(optimizier, milestones=settings.MILESTONES, gamma=0.1, last_epoch=-1)
+    iter_per_epoch = len(train_datasets)
+    warmup_scheduler = WarmUpLR(optimizier, iter_per_epoch * args.warm_up)
+    checkpoints_path = os.path.join(settings.CHECKPOINT_PATH, args.model, settings.TIME_NOW)
 
+    if not os.path.exists(settings.LOG_DIR):
+        os.makedirs(settings.LOG_DIR)
+    writer = SummaryWriter(log_dir=os.path.join(settings.LOG_DIR, args.net, settings.TIME_NOW))
 
+    input_tensor = torch.Tensor(args.batch_size, 3, 32, 32).cuda()
+    writer.add_graph(model, torch.autograd.Variable(input_tensor, required_grad=True))
 
+    if not os.path.join(checkpoints_path):
+        os.makedirs(checkpoints_path)
+    checkpoints_path = os.path.join(checkpoints_path, '{model}_{epoch}-{type}.pth')
 
+    best_acc = 0.0
+    for epoch in range(1, settings.EPOCH + 1):
+        if epoch > args.warm_up:
+            train_sheduler.step(epoch)
+        
+        train(model, train_datasets, optimizer, criterion, epoch, writer, warmup_scheduler)
+        acc = eval(model, test_datasets, criterion, epoch, writer)
+
+        if epoch > settings.MILESTONES[1] and best_acc < acc:
+            torch.save(model.state_dict(), checkpoints_path.format(model=args.model, epoch=epoch, type='best'))
+            best_acc = acc
+            
+        if not epoch % settings.SAVE_EPOCH:
+            torch.save(model.state_dict(), checkpoints_path.format(model=args.model, epoch=epoch, type='regular'))
+
+    writer.close()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -102,19 +133,3 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     main()
-
-    
-
-
-
-        
-
-
-
-
-
-
-
-        
-
-
