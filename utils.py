@@ -62,8 +62,8 @@ def get_test_dataloder(mean, std, batch_size=16, num_works=2, shuffle=False):
 
 class WarmUpLR(_LRScheduler):
   def __init__(self, optimizier, total_iters, last_epoch=-1):
-    super().__init__(optimizier,last_epoch)
     self.total_iters = total_iters
+    super().__init__(optimizier,last_epoch)
 
   def get_lr(self):
 

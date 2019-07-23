@@ -95,10 +95,10 @@ def main():
 
     if not os.path.exists(settings.LOG_DIR):
         os.makedirs(settings.LOG_DIR)
-    writer = SummaryWriter(log_dir=os.path.join(settings.LOG_DIR, args.net, settings.TIME_NOW))
+    writer = SummaryWriter(log_dir=os.path.join(settings.LOG_DIR, args.model, settings.TIME_NOW))
 
-    input_tensor = torch.Tensor(args.batch_size, 3, 32, 32).cuda()
-    writer.add_graph(model, torch.autograd.Variable(input_tensor, required_grad=True))
+    #input_tensor = torch.Tensor(args.batch_size, 3, 32, 32).cuda()
+    #writer.add_graph(model, torch.autograd.Variable(input_tensor, required_grad=True))
 
     if not os.path.join(checkpoints_path):
         os.makedirs(checkpoints_path)
@@ -109,7 +109,7 @@ def main():
         if epoch > args.warm_up:
             train_sheduler.step(epoch)
         
-        train(model, train_datasets, optimizer, criterion, epoch, writer, warmup_scheduler)
+        train(model, train_datasets, optimizier, criterion, epoch, writer, warmup_scheduler)
         acc = eval(model, test_datasets, criterion, epoch, writer)
 
         if epoch > settings.MILESTONES[1] and best_acc < acc:
