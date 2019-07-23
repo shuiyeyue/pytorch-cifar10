@@ -19,7 +19,7 @@ def train(model, datasets, optimizer, criterion, epoch, writer, warmup_scheduler
     
     model.train()
     for batch_index, (images, labels) in enumerate(datasets):
-        if epoch <= args.warm:
+        if epoch <= args.warm_up:
             warmup_scheduler.step()
         
         images = torch.autograd.Variable(images).cuda()
@@ -32,7 +32,7 @@ def train(model, datasets, optimizer, criterion, epoch, writer, warmup_scheduler
         optimizer.step()
 
         print('Traning Epoch: {epoch} [{train_samples}/{total_samples}] \t Loss: {:.4f}\t LR: {:.6f}'.format(
-            loss.item() / len(images),
+            loss.item(),
             optimizer.param_groups[0]['lr'],
             epoch=epoch,
             train_samples=batch_index + 1,
@@ -40,7 +40,7 @@ def train(model, datasets, optimizer, criterion, epoch, writer, warmup_scheduler
             ))
 
         n_iter = (epoch - 1) * len(datasets) + batch_index + 1
-        writer.add_scalar('Train/loss', loss.item() / len(images), n_iter)
+        writer.add_scalar('Train/loss', loss.item(), n_iter)
 
 
 def eval(model, datasets, criterion, epoch, writer):
@@ -61,14 +61,14 @@ def eval(model, datasets, criterion, epoch, writer):
         num_data += len(images)
 
     print('Test set: Avg Loss: {:.4f}, Accuracy: {:.4f}'.format(
-        test_loss / num_data,
-        correct / num_data
+        test_loss / len(datasets),
+        100 * correct / num_data
     ))
 
-    writer.add_scalar('Test/loss', test_loss / num_data, epoch)
+    writer.add_scalar('Test/loss', test_loss / len(datasets), epoch)
     writer.add_scalar('Test/Acc', correct / num_data, epoch)
 
-    return correct.float() / num_data
+    return  100 * correct.float() / num_data
 
 
 def main():
@@ -102,7 +102,7 @@ def main():
     #input_tensor = torch.Tensor(args.batch_size, 3, 32, 32).cuda()
     #writer.add_graph(model, torch.autograd.Variable(input_tensor, required_grad=True))
 
-    if not os.path.join(checkpoints_path):
+    if not os.path.exists(checkpoints_path):
         os.makedirs(checkpoints_path)
     checkpoints_path = os.path.join(checkpoints_path, '{model}_{epoch}-{type}.pth')
 
