@@ -32,15 +32,15 @@ def train(model, datasets, optimizer, criterion, epoch, writer, warmup_scheduler
         optimizer.step()
 
         print('Traning Epoch: {epoch} [{train_samples}/{total_samples}] \t Loss: {:.4f}\t LR: {:.6f}'.format(
-            loss.item(),
+            loss.item() / len(images),
             optimizer.param_groups[0]['lr'],
-                        epoch=epoch,
-            train_samples=batch_index * args.batch_size + len(images),
+            epoch=epoch,
+            train_samples=batch_index + 1,
             total_samples=len(datasets)
             ))
 
         n_iter = (epoch - 1) * len(datasets) + batch_index + 1
-        writer.add_scalar('Train/loss', loss.item(), n_iter)
+        writer.add_scalar('Train/loss', loss.item() / len(images), n_iter)
 
 
 def eval(model, datasets, criterion, epoch, writer):
@@ -48,6 +48,7 @@ def eval(model, datasets, criterion, epoch, writer):
     model.eval()
     test_loss = 0.0
     correct = 0.0
+    num_data = 0.0
     for images, labels in datasets:
         images = torch.autograd.Variable(images).cuda()
         labels = torch.autograd.Variable(labels).cuda()
@@ -57,16 +58,17 @@ def eval(model, datasets, criterion, epoch, writer):
         test_loss += loss.item()
         _, pred = outputs.max(1)
         correct += pred.eq(labels).sum()
+        num_data += len(images)
 
     print('Test set: Avg Loss: {:.4f}, Accuracy: {:.4f}'.format(
-        test_loss / len(datasets),
-        correct / len(datasets)
+        test_loss / num_data,
+        correct / num_data
     ))
 
-    writer.add_scalar('Test/loss', test_loss / len(datasets), epoch)
-    writer.add_scalar('Test/Acc', correct / len(datasets), epoch)
+    writer.add_scalar('Test/loss', test_loss / num_data, epoch)
+    writer.add_scalar('Test/Acc', correct / num_data, epoch)
 
-    return correct.float() / len(datasets)
+    return correct.float() / num_data
 
 
 def main():
