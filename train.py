@@ -66,7 +66,7 @@ def eval(model, datasets, criterion, epoch, writer):
     ))
 
     writer.add_scalar('Test/loss', test_loss / len(datasets), epoch)
-    writer.add_scalar('Test/Acc', correct / num_data, epoch)
+    writer.add_scalar('Test/Acc',  100 * correct / num_data, epoch)
 
     return  100 * correct.float() / num_data
 
