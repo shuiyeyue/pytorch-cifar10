@@ -97,7 +97,7 @@ def main():
 
     if not os.path.exists(settings.LOG_DIR):
         os.makedirs(settings.LOG_DIR)
-    writer = SummaryWriter(log_dir=os.path.join(settings.LOG_DIR, args.model, settings.TIME_NOW))
+    writer = SummaryWriter(log_dir=os.path.join(settings.LOG_DIR, args.model))
 
     #input_tensor = torch.Tensor(args.batch_size, 3, 32, 32).cuda()
     #writer.add_graph(model, torch.autograd.Variable(input_tensor, required_grad=True))
