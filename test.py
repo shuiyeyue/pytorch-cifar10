@@ -18,7 +18,7 @@ def main():
         args.num_workers
     )
 
-    model.load_state_dict(torch.load(arg.weights), args.gpu)
+    model.load_state_dict(torch.load(args.weight), args.gpu)
     print(model)
     
     model.eval()
@@ -31,18 +31,18 @@ def main():
 
         outputs = model(images)
 
-        _, pred = outputs.top(5, 1, largest=True, sorted=True)
-        label = label.view(label.size(0), -1).expand_as(pred)
-        correct = pred.eq(label).float()
+        _, pred = outputs.topk(5, 1, largest=True, sorted=True)
+        labels = labels.view(labels.size(0), -1).expand_as(pred)
+        correct = pred.eq(labels).float()
 
-        correct_5 = correct[:, :5].sum()
-        correct_1 = correct[:, :1].sum()
+        correct_5 += correct[:, :5].sum()
+        correct_1 += correct[:, :1].sum()
 
         total += len(images)
 
     print("Top 1 err:", 1 - correct_1 / total)
     print("Top 5 err:", 1 - correct_5 / total)
-    print("Param numbers: {}".format(sum(p.numel() for p in mode.parameters())))
+    print("Param numbers: {}".format(sum(p.numel() for p in model.parameters())))
 
 
 
