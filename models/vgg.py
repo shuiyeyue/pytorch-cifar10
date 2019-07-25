@@ -2,7 +2,6 @@ import torch
 import torch.nn as nn
 
 import math
-from tensorboardX import SummaryWriter
 
 __all__ = ['vgg11','vgg13','vgg16','vgg19','vgg11_bn','vgg13_bn','vgg16_bn','vgg19_bn']
 
@@ -99,6 +98,3 @@ if __name__ == "__main__":
     input_size = torch.randn(1, 3, 32, 32)
     outputs = model(input_size)
     print(outputs)
-
-    with SummaryWriter(comment='vgg11') as w:
-        w.add_graph(model, (input_size,))
