@@ -133,12 +133,12 @@ class ResNet(nn.Module):
         downsample = None
         if stride != 1 or  self.inps != num_channel * block.expansion:
             downsample = nn.Sequential(
-                conv1x1(self.inps, num_channel, stride=stride),
-                nn.BatchNorm2d(num_channel),
+                conv1x1(self.inps, num_channel * block.expansion, stride=stride),
+                nn.BatchNorm2d(num_channel * block.expansion),
             )
 
         layers += [block(self.inps, num_channel, stride, downsample)]
-        self.inps = num_channel
+        self.inps = num_channel * block.expansion
         for i in range(1, num_layer):
             layers += [block(self.inps, num_channel)]
 
@@ -161,7 +161,7 @@ def resnet152(**kwargs):
 
 
 if __name__ == "__main__":
-    model = resnet18()
+    model = resnet50()
     print(model)
 
     inp = torch.randn(1,3,32,32)

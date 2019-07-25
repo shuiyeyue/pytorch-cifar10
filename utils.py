@@ -22,6 +22,15 @@ def get_network(args, use_gpu=True):
   elif args.model == 'vgg19':
     from models.vgg import vgg19_bn
     model = vgg19_bn()
+  elif args.model == 'resnet18':
+    from models.resnet import resnet18
+    model = resnet18()
+  elif args.model == 'resnet50':
+    from models.resnet import resnet50
+    model = resnet50()
+  elif args.model == 'resnet101':
+    from models.resnet import resnet101
+    model = resnet101()  
   else:
     print("modelwork is not supported.")
     sys.exit()
