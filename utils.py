@@ -30,7 +30,7 @@ def get_network(args, use_gpu=True):
     model = resnet50()
   elif args.model == 'resnet101':
     from models.resnet import resnet101
-    model = resnet101()  
+    model = resnet101()
   else:
     print("modelwork is not supported.")
     sys.exit()
