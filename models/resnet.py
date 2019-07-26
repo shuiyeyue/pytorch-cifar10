@@ -43,12 +43,12 @@ class BottleBlock(nn.Module):
     def __init__(self, inps, exps, stride=1, downsample=None):
         super(BottleBlock, self).__init__()
 
-        self.conv1 = conv3x3(inps, exps)
+        self.conv1 = conv1x1(inps, exps)
         self.bn1   = nn.BatchNorm2d(exps)
         self.relu  = nn.ReLU(inplace=True)
         self.conv2 = conv3x3(exps, exps, stride=stride)
         self.bn2   = nn.BatchNorm2d(exps)
-        self.conv3 = conv3x3(exps, exps * self.expansion)
+        self.conv3 = conv1x1(exps, exps * self.expansion)
         self.bn3   = nn.BatchNorm2d(exps * self.expansion)
 
         self.downsample = downsample
@@ -166,7 +166,4 @@ if __name__ == "__main__":
 
     inp = torch.randn(1,3,32,32)
     oup = model(inp)
-    print(oup)
-
-
-        
+    print(oup)        
