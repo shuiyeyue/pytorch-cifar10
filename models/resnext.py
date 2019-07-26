@@ -75,7 +75,7 @@ class BottleBlock(nn.Module):
         return x
 
 class ResNext(nn.Module):
-    def __init__(self, block, num_layers, groups, num_classes=100):
+    def __init__(self, block, num_layers, groups=32, num_classes=100):
         super(ResNext, self).__init__()
         self.inps = 64
 
