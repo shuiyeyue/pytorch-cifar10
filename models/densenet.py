@@ -22,7 +22,7 @@ class Bottleneck(nn.Module):
 
     def forward(self, x):
         res = x
-
+        
         x = self.bn1(x)
         x = self.relu(x)
         x = self.conv1(x)
@@ -31,6 +31,8 @@ class Bottleneck(nn.Module):
         x = self.conv2(x)
 
         x = torch.cat([res, x], 1)
+
+        return x
 
 class Transition(nn.Module):
     def __init__(self, inps, oups):
@@ -68,6 +70,7 @@ class DenseNet(nn.Module):
             nn.BatchNorm2d(self.inps),
             nn.ReLU(inplace=True)
         ]
+        
         self.features = nn.Sequential(*layers)
 
         self.avg_pool = nn.AdaptiveAvgPool2d((1,1))
