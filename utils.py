@@ -31,6 +31,15 @@ def get_network(args, use_gpu=True):
   elif args.model == 'resnet101':
     from models.resnet import resnet101
     model = resnet101()
+  elif args.model == 'resnext18':
+    from models.resnext import resnext18
+    model = resnet18()
+  elif args.model == 'resnext50':
+    from models.resnext import resnext50
+    model = resnet50()
+  elif args.model == 'resnext101':
+    from models.resnext import resnext101
+    model = resnet101()
   else:
     print("modelwork is not supported.")
     sys.exit()
