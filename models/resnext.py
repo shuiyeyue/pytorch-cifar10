@@ -49,7 +49,7 @@ class BottleBlock(nn.Module):
         self.relu  = nn.ReLU(inplace=True)
         self.conv2 = conv3x3(exps * 2, exps * 2, stride=stride, groups=groups)
         self.bn2   = nn.BatchNorm2d(exps * 2)
-        self.conv3 = conv3x3(exps * 2, exps * self.expansion)
+        self.conv3 = conv1x1(exps * 2, exps * self.expansion)
         self.bn3   = nn.BatchNorm2d(exps * self.expansion)
 
         self.downsample = downsample
