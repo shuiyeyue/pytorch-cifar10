@@ -40,6 +40,15 @@ def get_network(args, use_gpu=True):
   elif args.model == 'resnext101':
     from models.resnext import resnext101
     model = resnet101()
+  elif args.model == 'densenet121':
+    from models.densenet import densenet121
+    model = densenet121()
+  elif args.model == 'densenet169':
+    from models.densenet import densenet169
+    model = densenet169()
+  elif args.model == 'densenet201':
+    from models.densenet import densenet201
+    model = densenet201()
   else:
     print("modelwork is not supported.")
     sys.exit()
