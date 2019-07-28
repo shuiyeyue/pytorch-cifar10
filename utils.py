@@ -49,6 +49,9 @@ def get_network(args, use_gpu=True):
   elif args.model == 'densenet201':
     from models.densenet import densenet201
     model = densenet201()
+  elif args.model == 'shufflenetv2':
+    from models.shufflenet import shufflenetv2
+    model = shufflenetv2()
   else:
     print("modelwork is not supported.")
     sys.exit()
