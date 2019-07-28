@@ -33,13 +33,13 @@ def get_network(args, use_gpu=True):
     model = resnet101()
   elif args.model == 'resnext18':
     from models.resnext import resnext18
-    model = resnet18()
+    model = resnext18()
   elif args.model == 'resnext50':
     from models.resnext import resnext50
-    model = resnet50()
+    model = resnext50()
   elif args.model == 'resnext101':
     from models.resnext import resnext101
-    model = resnet101()
+    model = resnext101()
   elif args.model == 'densenet121':
     from models.densenet import densenet121
     model = densenet121()
