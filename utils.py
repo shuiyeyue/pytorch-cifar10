@@ -55,6 +55,9 @@ def get_network(args, use_gpu=True):
   elif args.model == 'mobilenetv2':
     from models.mobilenet import mobilnetv2
     model = mobilnetv2()
+  elif args.model == 'efficientnet':
+    from models.efficientnet import efficientnet
+    model = efficientnet()
   else:
     print("modelwork is not supported.")
     sys.exit()
