@@ -52,6 +52,9 @@ def get_network(args, use_gpu=True):
   elif args.model == 'shufflenetv2':
     from models.shufflenet import shufflenetv2
     model = shufflenetv2()
+  elif args.model == 'mobilenetv2':
+    from models.mobilenet import mobilnetv2
+    model = mobilnetv2()
   else:
     print("modelwork is not supported.")
     sys.exit()
