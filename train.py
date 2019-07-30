@@ -128,7 +128,7 @@ if __name__ == "__main__":
     parser.add_argument('-model', type=str, required=True, help='model')
     parser.add_argument('-gpu', type=bool, default=True, help='use gpu or not')
     parser.add_argument('-num_workers', type=int, default=4, help='number of workers for dataloader')
-    parser.add_argument('-batch_size', type=int, default=128, help='batch_size')
+    parser.add_argument('-batch_size', type=int, default=64, help='batch_size')
     parser.add_argument('-lr',type=float, default=0.1, help='initial learning rate')
     parser.add_argument('-warm_up', type=int, default=1, help='warm up train phase')
 
