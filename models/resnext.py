@@ -79,27 +79,27 @@ class ResNext(nn.Module):
         super(ResNext, self).__init__()
         self.inps = 64
 
-        self.conv1 = conv3x3(3, 64)
+        #self.conv1 = conv3x3(3, 64, 2)
+        self.conv1 = conv3x3(3, 64, 1)
         self.bn1   = nn.BatchNorm2d(64)
-        self.relu  = nn.ReLU()
+        self.relu  = nn.ReLU(inplace=True)
+        #self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2)
 
-        self.layer1 = self._make_layers(block, 64 , num_layers[0], 2, groups)
-        self.layer2 = self._make_layers(block, 128, num_layers[1], 1, groups)
+        self.layer1 = self._make_layers(block, 64 , num_layers[0], 1, groups)
+        self.layer2 = self._make_layers(block, 128, num_layers[1], 2, groups)
         self.layer3 = self._make_layers(block, 256, num_layers[2], 2, groups)
         self.layer4 = self._make_layers(block, 512, num_layers[3], 2, groups)
 
         self.avgpool  = nn.AdaptiveAvgPool2d(1)
         self.classify = nn.Sequential(
-            nn.Linear(512 * block.expansion, 512),
-            nn.ReLU(inplace=True),
-            nn.Dropout(),
-            nn.Linear(512, num_classes),
+            nn.Linear(512 * block.expansion, num_classes),
         )
  
     def forward(self, x):
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
+        #x = self.maxpool(x)
 
         x = self.layer1(x)
         x = self.layer2(x)

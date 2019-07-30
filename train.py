@@ -62,7 +62,7 @@ def eval(model, datasets, criterion, epoch, writer):
 
     print('Test set: Avg Loss: {:.4f}, Accuracy: {:.4f}'.format(
         test_loss / len(datasets),
-        100 * correct / num_data
+        100 * correct.float() / num_data
     ))
 
     writer.add_scalar('Test/loss', test_loss / len(datasets), epoch)

@@ -35,14 +35,16 @@ class MobileNetV2(nn.Module):
         super(MobileNetV2, self).__init__()
 
         self.pre_conv = nn.Sequential(
+            #nn.Conv2d(3, 32, kernel_size=3, stride=2, padding=1, bias=False),
             nn.Conv2d(3, 32, kernel_size=3, stride=1, padding=1, bias=False),
             nn.BatchNorm2d(32),
-            nn.ReLU(),
+            nn.ReLU(inplace=True),
         )
 
         self.stage1 = LinearBottleNeck(32 , 16,  1, 1)
-        self.stage2 = self._make_stage(16 , 24,  2, 6, 2)
-        self.stage3 = self._make_stage(24 , 32,  1, 6, 3)
+        #self.stage2 = self._make_stage(16 , 24,  2, 6, 2)
+        self.stage2 = self._make_stage(16 , 24,  1, 6, 2)
+        self.stage3 = self._make_stage(24 , 32,  2, 6, 3)
         self.stage4 = self._make_stage(32 , 64,  2, 6, 4)
         self.stage5 = self._make_stage(64 , 96,  1, 6, 3)
         self.stage6 = self._make_stage(96 , 160, 2, 6, 3)
@@ -55,8 +57,9 @@ class MobileNetV2(nn.Module):
         )
 
         self.avg_pool = nn.AdaptiveAvgPool2d((1,1))
-        self.classify = nn.Conv2d(1280, num_classes, kernel_size=1)
-
+        self.classify = nn.Sequential(
+            nn.Linear(1280, num_classes),
+        )
         self._init_weight()
 
     def forward(self, x):
@@ -71,8 +74,8 @@ class MobileNetV2(nn.Module):
         x =self.conv_last(x)
 
         x = self.avg_pool(x)
-        x = self.classify(x)
         x = x.view(x.size(0), -1)
+        x = self.classify(x)
         return x
 
     def _make_stage(self, inps, oups, stride, t, repeat):

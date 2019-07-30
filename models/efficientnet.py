@@ -44,11 +44,13 @@ class EfficientNet(nn.Module):
 
         self.pre_conv = nn.Sequential(
             nn.Conv2d(3, 32, kernel_size=3, stride=1, padding=1, bias=False),
+            #nn.Conv2d(3, 32, kernel_size=3, stride=2, padding=1, bias=False),
             nn.BatchNorm2d(32),
             nn.ReLU(inplace=True),
         )
 
         self.stage1 = LinearBottleNeck(32, 16, 1, 3, 6, has_SE)
+        #self.stage2 = self._make_stage(16, 24, 2, 3, 6, has_SE, 2)
         self.stage2 = self._make_stage(16, 24, 1, 3, 6, has_SE, 2)
         self.stage3 = self._make_stage(24, 40, 2, 5, 6, has_SE, 2)
         self.stage4 = self._make_stage(40, 80, 2, 3, 6, has_SE, 3)

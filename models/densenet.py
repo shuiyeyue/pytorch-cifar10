@@ -58,14 +58,17 @@ class DenseNet(nn.Module):
 
         self.growth_rate = growth_rate
         self.inps = 2 * growth_rate
-        self.conv1 = conv3x3(3, self.inps, stride=1)
+        self.conv1 = conv3x3(3, self.inps, stride=2)
+        #self.conv1 = conv3x3(3, self.inps, stride=2)
+        #self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2)
 
         layers = []
         for index in range(len(nblocks)):
             layers += self._make_layers(block, nblocks[index])
-            self.oups = int(self.inps * reduction)
-            layers += [Transition(self.inps, self.oups)]
-            self.inps = self.oups
+            if index != len(nblocks) - 1:
+                self.oups = int(self.inps * reduction)
+                layers += [Transition(self.inps, self.oups)]
+                self.inps = self.oups
         layers += [
             nn.BatchNorm2d(self.inps),
             nn.ReLU(inplace=True)
@@ -75,10 +78,7 @@ class DenseNet(nn.Module):
 
         self.avg_pool = nn.AdaptiveAvgPool2d((1,1))
         self.classify = nn.Sequential(
-            nn.Linear(self.inps, 512),
-            nn.ReLU(inplace=True),
-            nn.Dropout(),
-            nn.Linear(512, num_classes),
+            nn.Linear(self.inps, num_classes),
         )
 
         self._init_weight()
@@ -86,6 +86,7 @@ class DenseNet(nn.Module):
 
     def forward(self, x):
         x = self.conv1(x)
+        #x = self.maxpool(x)
         x = self.features(x)
         x = self.avg_pool(x)
 

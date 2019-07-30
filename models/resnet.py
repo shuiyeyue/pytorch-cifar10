@@ -78,21 +78,21 @@ class ResNet(nn.Module):
         super(ResNet, self).__init__()
         self.inps = 64
 
-        self.conv1 = conv3x3(3, 64, stride=1)
+        
+        self.conv1 = nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1, bias=False)
+        #self.conv1 = nn.Conv2d(3, 64, kernel_size=3, stride=2, padding=1, bias=False)
         self.bn1   = nn.BatchNorm2d(64)
         self.relu  = nn.ReLU(inplace=True)
+        #self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2)
 
-        self.layer1 = self._make_layers(block, num_layers[0], 64,  2)
-        self.layer2 = self._make_layers(block, num_layers[1], 128, 1)
+        self.layer1 = self._make_layers(block, num_layers[0], 64,  1)
+        self.layer2 = self._make_layers(block, num_layers[1], 128, 2)
         self.layer3 = self._make_layers(block, num_layers[2], 256, 2)
         self.layer4 = self._make_layers(block, num_layers[3], 512, 2)
-        self.avgpool = nn.AdaptiveAvgPool2d(1)
+        self.avgpool = nn.AdaptiveAvgPool2d((1,1))
 
         self.classify = nn.Sequential(
-            nn.Linear(512 * block.expansion, 512),
-            nn.ReLU(inplace=True),
-            nn.Dropout(),
-            nn.Linear(512, num_classes)
+            nn.Linear(512 * block.expansion, num_classes)
         )
 
         self._init_weight()
@@ -115,6 +115,7 @@ class ResNet(nn.Module):
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
+        #x = self.maxpool(x)
 
         x = self.layer1(x)
         x = self.layer2(x)

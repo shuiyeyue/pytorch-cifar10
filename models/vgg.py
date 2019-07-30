@@ -4,12 +4,19 @@ import torch.nn as nn
 import math
 
 __all__ = ['vgg11','vgg13','vgg16','vgg19','vgg11_bn','vgg13_bn','vgg16_bn','vgg19_bn']
-
+'''
 cfgs = {
     'A': [64, 'M', 128, 'M', 256, 256, 'M', 512, 512, 'M', 512, 512, 'M'],
     'B': [64, 64, 'M', 128, 128, 'M', 256, 256, 'M', 512, 512, 'M', 512, 512, 'M'],
     'D': [64, 64, 'M', 128, 128, 'M', 256, 256, 256, 'M', 512, 512, 512, 'M', 512, 512, 512, 'M'],
     'E': [64, 64, 'M', 128, 128, 'M', 256, 256, 256, 256, 'M', 512, 512, 512, 512 ,'M',  512, 512, 512, 512 ,'M']
+}
+'''
+cfgs = {
+    'A': [64, 128, 256, 256, 'M', 512, 512, 'M', 512, 512, 'M'],
+    'B': [64, 64, 128, 128, 256, 256, 'M', 512, 512, 'M', 512, 512, 'M'],
+    'D': [64, 64, 128, 128, 256, 256, 256, 'M', 512, 512, 512, 'M', 512, 512, 512, 'M'],
+    'E': [64, 64, 128, 128, 256, 256, 256, 256, 'M', 512, 512, 512, 512 ,'M',  512, 512, 512, 512 ,'M']
 }
 
 class VGG(nn.Module):
@@ -19,10 +26,8 @@ class VGG(nn.Module):
         self.bn = bn
 
         self.features = self._make_layers(cfg)
+        self.avg_pool = nn.AdaptiveAvgPool2d((1,1))
         self.classify = nn.Sequential(
-            nn.Linear(512, 512),
-            nn.ReLU(inplace=True),
-            nn.Dropout(),
             nn.Linear(512,num_classes)
         )
         self._init_weight()
@@ -61,6 +66,7 @@ class VGG(nn.Module):
 
     def forward(self, x):
         x = self.features(x)
+        x = self.avg_pool(x)
         x = x.view(x.size(0), -1)
         x = self.classify(x)
 
