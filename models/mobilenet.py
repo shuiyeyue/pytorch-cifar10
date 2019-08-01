@@ -111,4 +111,5 @@ if __name__ == "__main__":
 
     inp = torch.randn(1,3,32,32)
     oup = model(inp)
-    print(oup)   
+    print(oup)
+    print("Param numbers: {}".format(sum(p.numel() for p in model.parameters())))

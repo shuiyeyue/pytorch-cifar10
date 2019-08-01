@@ -78,11 +78,11 @@ class ShuffleNetV2(nn.Module):
         else:
             ValueError('error !')
 
-        self.conv1 = nn.Conv2d(3, 24, kernel_size=3, stride=1, padding=1, bias=False)
-        #self.conv1 = nn.Conv2d(3, 24, kernel_size=3, stride=2, padding=1, bias=False)
+        
+        self.conv1 = nn.Conv2d(3, 24, kernel_size=3, stride=2, padding=1, bias=False)
         self.bn1   = nn.BatchNorm2d(24)
         self.relu  = nn.ReLU(inplace=True)
-        #self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2)
+        self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2)
 
         self.stage2 = self._make_layers(24, self.oups[0], 3)
         self.stage3 = self._make_layers(self.oups[0], self.oups[1], 7)
@@ -129,7 +129,7 @@ class ShuffleNetV2(nn.Module):
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
-        #x = self.maxpool(x)
+        x = self.maxpool(x)
 
         x = self.stage2(x)
         x = self.stage3(x)
@@ -144,13 +144,14 @@ class ShuffleNetV2(nn.Module):
 
 
 def shufflenetv2(**kwargs):
-    return ShuffleNetV2()
+    return ShuffleNetV2(**kwargs)
 
 
 if __name__ == "__main__":
-    model = shufflenetv2()
+    model = shufflenetv2(ratio=0.5)
     print(model)
 
-    inp = torch.randn(1,3,32,32)
+    inp = torch.randn(1,3,224,224)
     oup = model(inp)
     print(oup) 
+    print("Param numbers: {}".format(sum(p.numel() for p in model.parameters())))
