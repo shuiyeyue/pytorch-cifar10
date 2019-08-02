@@ -25,21 +25,33 @@ def get_network(args, use_gpu=True):
   elif args.model == 'resnet18':
     from models.resnet import resnet18
     model = resnet18()
+  elif args.model == 'resnet36':
+    from models.resnet import resnet36
+    model = resnet36()
   elif args.model == 'resnet50':
     from models.resnet import resnet50
     model = resnet50()
   elif args.model == 'resnet101':
     from models.resnet import resnet101
     model = resnet101()
+  elif args.model == 'resnet152':
+    from models.resnet import resnet152
+    model = resnet152()
   elif args.model == 'resnext18':
     from models.resnext import resnext18
     model = resnext18()
+  elif args.model == 'resnext36':
+    from models.resnext import resnext36
+    model = resnext36()
   elif args.model == 'resnext50':
     from models.resnext import resnext50
     model = resnext50()
   elif args.model == 'resnext101':
     from models.resnext import resnext101
     model = resnext101()
+  elif args.model == 'resnext152':
+    from models.resnext import resnext152
+    model = resnext152()
   elif args.model == 'densenet121':
     from models.densenet import densenet121
     model = densenet121()
