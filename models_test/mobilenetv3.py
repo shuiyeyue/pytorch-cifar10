@@ -62,7 +62,7 @@ class Identity(nn.Module):
     def forward(self, x):
         return x
 
-def make_divisible(v, divisior, min_value=None):
+def make_divisible(v, divisior=8, min_value=None):
     if min_value is None:
         min_value = divisior
 
@@ -202,7 +202,8 @@ class MobileNetV3(nn.Module):
 
     def forward(self, x):
         x = self.features(x)
-        x = x.mean(3).mean(2)
+        #x = x.mean(3).mean(2)
+        x = x.view(x.size(0), -1)
         x = self.classifier(x)
         return x
 
@@ -231,12 +232,13 @@ def mobilenetv3(pretrained=False, **kwargs):
     return model
 
 
-if __name__ == '__main__':
-    net = mobilenetv3()
-    print('mobilenetv3:\n', net)
-    print('Total params: %.2fM' % (sum(p.numel() for p in net.parameters())/1000000.0))
-    input_size=(1, 3, 224, 224)
-    x = torch.randn(input_size)
-    out = net(x)
 
+if __name__ == "__main__":
+    model = mobilenetv3()
+    print(model)
+
+    inp = torch.randn(1,3,224,224)
+    oup = model(inp)
+    print(oup)
+    print("Param numbers: {}".format(sum(p.numel() for p in model.parameters())))
 

@@ -134,9 +134,11 @@ class MobilenetV2(nn.Module):
                 if not m.bias is None:
                     nn.init.constant_(m.bias, 0)
 
+def mobilenetv2(**kwargs):
+    return MobilenetV2(**kwargs)
 
 if __name__ == "__main__":
-    model = MobilenetV2(scale=1.0, num_classes=100)
+    model = mobilenetv2()
     print(model)
 
     inp = torch.randn(1,3,224,224)
