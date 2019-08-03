@@ -13,7 +13,7 @@ class BasicBlock(nn.Module):
     expansion = 2
     def __init__(self, inps, oups, stride=1, groups=1, downsample=None):
         super(BasicBlock, self).__init__()
-        
+
         self.conv1 = conv3x3(inps, oups * 2)
         self.bn1   = nn.BatchNorm2d(oups * 2)
         self.relu  = nn.ReLU(inplace=True)
@@ -30,11 +30,11 @@ class BasicBlock(nn.Module):
         x = self.relu(x)
         x = self.conv2(x)
         x = self.bn2(x)
-        
+
         if not self.downsample is None:
             res = self.downsample(res)
 
-        res += x
+        x += res
         x = self.relu(x)
 
         return x
@@ -94,7 +94,7 @@ class ResNext(nn.Module):
         self.classify = nn.Sequential(
             nn.Linear(512 * block.expansion, num_classes),
         )
- 
+
     def forward(self, x):
         x = self.conv1(x)
         x = self.bn1(x)
@@ -111,7 +111,7 @@ class ResNext(nn.Module):
         x = self.classify(x)
 
         return x
-    
+
     def _init_weight(self):
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
@@ -130,7 +130,7 @@ class ResNext(nn.Module):
         layers = []
 
         downsample = None
-        if stride != 1 or self.inps != oups * block.expansion: 
+        if stride != 1 or self.inps != oups * block.expansion:
             downsample = nn.Sequential(
                 conv1x1(self.inps, oups * block.expansion, stride=stride),
                 nn.BatchNorm2d(oups * block.expansion),
@@ -161,9 +161,9 @@ def resnext152(**kwargs):
 
 
 if __name__ == "__main__":
-    model = resnext50()
+    model = resnext18()
     print(model)
 
     inp = torch.randn(1,3,32,32)
     oup = model(inp)
-    print(oup)      
+    print(oup)
