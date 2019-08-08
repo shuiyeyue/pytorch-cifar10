@@ -58,7 +58,7 @@ class DenseNet(nn.Module):
 
         self.growth_rate = growth_rate
         self.inps = 2 * growth_rate
-        self.conv1 = conv3x3(3, self.inps, stride=2)
+        self.conv1 = conv3x3(3, self.inps, stride=1)
         #self.conv1 = conv3x3(3, self.inps, stride=2)
         #self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2)
 
