@@ -112,12 +112,13 @@ def main():
             train_sheduler.step(epoch)
         
         train(model, train_datasets, optimizier, criterion, epoch, writer, warmup_scheduler)
+        #'''
         acc = eval(model, test_datasets, criterion, epoch, writer)
 
         if epoch > settings.MILESTONES[1] and best_acc < acc:
             torch.save(model.state_dict(), checkpoints_path.format(model=args.model, epoch=epoch, type='best'))
             best_acc = acc
-            
+        #'''    
         if not epoch % settings.SAVE_EPOCH:
             torch.save(model.state_dict(), checkpoints_path.format(model=args.model, epoch=epoch, type='regular'))
 

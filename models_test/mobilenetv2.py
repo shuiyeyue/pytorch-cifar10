@@ -61,7 +61,8 @@ class MobilenetV2(nn.Module):
 
         self.c = [_make_divisible(ch * self.scale, 8) for ch in self.num_channels]
         self.n = [1, 1, 2, 3, 4, 3, 3, 1]
-        self.s = [2, 1, 2, 2, 2, 1, 2, 1]
+        #self.s = [2, 1, 2, 2, 2, 1, 2, 1]
+        self.s = [1, 1, 1, 2, 2, 1, 2, 1]
 
         self.pre_conv = nn.Sequential(
             nn.Conv2d(in_channels, self.c[0], kernel_size=3, stride=self.s[0], padding=1, bias=False),
