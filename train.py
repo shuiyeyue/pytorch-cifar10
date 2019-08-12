@@ -45,20 +45,21 @@ def train(model, datasets, optimizer, criterion, epoch, writer, warmup_scheduler
 
 def eval(model, datasets, criterion, epoch, writer):
 
-    model.eval()
+    model.eval()   
     test_loss = 0.0
     correct = 0.0
     num_data = 0.0
-    for images, labels in datasets:
-        images = torch.autograd.Variable(images).cuda()
-        labels = torch.autograd.Variable(labels).cuda()
+    with torch.no_grad():
+        for images, labels in datasets:
+            images = torch.autograd.Variable(images).cuda()
+            labels = torch.autograd.Variable(labels).cuda()
 
-        outputs = model(images)
-        loss = criterion(outputs, labels)
-        test_loss += loss.item()
-        _, pred = outputs.max(1)
-        correct += pred.eq(labels).sum()
-        num_data += len(images)
+            outputs = model(images)
+            loss = criterion(outputs, labels)
+            test_loss += loss.item()
+            _, pred = outputs.max(1)
+            correct += pred.eq(labels).sum()
+            num_data += len(images)
 
     print('Test set: Avg Loss: {:.4f}, Accuracy: {:.4f}'.format(
         test_loss / len(datasets),
