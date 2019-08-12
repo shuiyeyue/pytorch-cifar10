@@ -64,9 +64,24 @@ def get_network(args, use_gpu=True):
   elif args.model == 'shufflenetv2':
     from models.shufflenet import shufflenetv2
     model = shufflenetv2()
-  elif args.model == 'mobilenetv2_1.0':
-    from models_test.mobilenetv2 import mobilenetv2
-    model = mobilenetv2(scale=1.0)
+  elif args.model == 'mobilenetv2_normal':
+    from models_test.mobilenetv2 import mobilenetv2_normal
+    model = mobilenetv2_normal()
+  elif args.model == 'mobilenetv2_small_div3':
+    from models_test.mobilenetv2 import mobilenetv2_small_div3
+    model = mobilenetv2_small_div3()
+  elif args.model == 'mobilenetv2_small_div5':
+    from models_test.mobilenetv2 import mobilenetv2_small_div5
+    model = mobilenetv2_small_div5()
+  elif args.model == 'mobilenetv2_small_div7':
+    from models_test.mobilenetv2 import mobilenetv2_small_div7
+    model = mobilenetv2_small_div7()
+  elif args.model == 'mobilenetv2_big_prob1':
+    from models_test.mobilenetv2 import mobilenetv2_big_prob1
+    model = mobilenetv2_big_prob1()
+  elif args.model == 'mobilenetv2_big_prob2':
+    from models_test.mobilenetv2 import mobilenetv2_big_prob2
+    model = mobilenetv2_big_prob2()
   elif args.model == 'efficientnet':
     from models.efficientnet import efficientnet
     model = efficientnet()

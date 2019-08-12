@@ -135,11 +135,26 @@ class MobilenetV2(nn.Module):
                 if not m.bias is None:
                     nn.init.constant_(m.bias, 0)
 
-def mobilenetv2(**kwargs):
-    return MobilenetV2(**kwargs)
+def mobilenetv2_normal(**kwargs):
+    return MobilenetV2(scale=1.0, **kwargs)
+
+def mobilenetv2_small_div3(**kwargs):
+    return MobilenetV2(scale=0.35, **kwargs)
+
+def mobilenetv2_small_div5(**kwargs):
+    return MobilenetV2(scale=0.5, **kwargs)
+
+def mobilenetv2_small_div7(**kwargs):
+    return MobilenetV2(scale=0.75, **kwargs)
+
+def mobilenetv2_big_prob1(**kwargs):
+    return MobilenetV2(scale=1.5, **kwargs)
+
+def mobilenetv2_big_prob2(**kwargs):
+    return MobilenetV2(scale=2.0, **kwargs)
 
 if __name__ == "__main__":
-    model = mobilenetv2()
+    model = mobilenetv2_normal()
     print(model)
 
     inp = torch.randn(1,3,224,224)
