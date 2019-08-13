@@ -79,10 +79,11 @@ class ShuffleNetV2(nn.Module):
             ValueError('error !')
 
         
-        self.conv1 = nn.Conv2d(3, 24, kernel_size=3, stride=2, padding=1, bias=False)
+        #self.conv1 = nn.Conv2d(3, 24, kernel_size=3, stride=2, padding=1, bias=False)
+        self.conv1 = nn.Conv2d(3, 24, kernel_size=3, stride=1, padding=1, bias=False)
         self.bn1   = nn.BatchNorm2d(24)
         self.relu  = nn.ReLU(inplace=True)
-        self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2)
+        #self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2)
 
         self.stage2 = self._make_layers(24, self.oups[0], 3)
         self.stage3 = self._make_layers(self.oups[0], self.oups[1], 7)
@@ -129,7 +130,7 @@ class ShuffleNetV2(nn.Module):
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
-        x = self.maxpool(x)
+        #x = self.maxpool(x)
 
         x = self.stage2(x)
         x = self.stage3(x)
