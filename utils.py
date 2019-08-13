@@ -62,16 +62,16 @@ def get_network(args, use_gpu=True):
     from models.densenet import densenet201
     model = densenet201()
   elif args.model == 'shufflenetv2_small':
-    from models.shufflenet import shufflenetv2
+    from models_test.shufflenetv2 import shufflenetv2
     model = shufflenetv2(ratio=0.5)
   elif args.model == 'shufflenetv2_big':
-    from models.shufflenet import shufflenetv2
+    from models_test.shufflenetv2 import shufflenetv2
     model = shufflenetv2(ratio=1.5)
   elif args.model == 'shufflenetv2_large':
-    from models.shufflenet import shufflenetv2
+    from models_test.shufflenetv2 import shufflenetv2
     model = shufflenetv2(ratio=2.0)
   elif args.model == 'shufflenetv2':
-    from models.shufflenet import shufflenetv2
+    from models_test.shufflenetv2 import shufflenetv2
     model = shufflenetv2()
   elif args.model == 'mobilenetv2_normal':
     from models_test.mobilenetv2 import mobilenetv2_normal
