@@ -73,7 +73,7 @@ class ShuffleNetV2(nn.Module):
             self.oups = [116, 232, 464, 1024]
         elif ratio == 1.5:
             self.oups = [176, 352, 704, 1024]
-        elif ration == 2.0:
+        elif ratio == 2.0:
             self.oups = [224, 448, 976, 2048]
         else:
             ValueError('error !')
