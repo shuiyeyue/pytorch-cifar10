@@ -125,7 +125,8 @@ class MobileNetV3(nn.Module):
             mobile_setting = [
                 # k, exp, c,  se,     nl,  s,
                 [3, 16,  16,  False, 'RE', 1],
-                [3, 64,  24,  False, 'RE', 2],
+                #[3, 64,  24,  False, 'RE', 2],
+                [3, 64,  24,  False, 'RE', 1],
                 [3, 72,  24,  False, 'RE', 1],
                 [5, 72,  40,  True,  'RE', 2],
                 [5, 120, 40,  True,  'RE', 1],
@@ -144,7 +145,8 @@ class MobileNetV3(nn.Module):
             # refer to Table 2 in paper
             mobile_setting = [
                 # k, exp, c,  se,     nl,  s,
-                [3, 16,  16,  True,  'RE', 2],
+                # [3, 16,  16,  True,  'RE', 2],
+                [3, 16,  16,  True,  'RE', 1],
                 [3, 72,  24,  False, 'RE', 2],
                 [3, 88,  24,  False, 'RE', 1],
                 [5, 96,  40,  True,  'HS', 2],
@@ -162,7 +164,8 @@ class MobileNetV3(nn.Module):
         # building first layer
         assert input_size % 32 == 0
         last_channel = make_divisible(last_channel * width_mult) if width_mult > 1.0 else last_channel
-        self.features = [conv_bn(3, input_channel, 2, nlin_layer=Hswish)]
+        # self.features = [conv_bn(3, input_channel, 2, nlin_layer=Hswish)]
+        self.features = [conv_bn(3, input_channel, 1, nlin_layer=Hswish)]
         self.classifier = []
 
         # building mobile blocks
