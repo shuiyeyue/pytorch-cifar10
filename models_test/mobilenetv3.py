@@ -198,7 +198,7 @@ class MobileNetV3(nn.Module):
             nn.Linear(last_channel, n_class),
         )
 
-        self._initialize_weights()
+        self.init_params()
 
     def forward(self, x):
         x = self.features(x)
@@ -207,20 +207,19 @@ class MobileNetV3(nn.Module):
         x = self.classifier(x)
         return x
 
-    def _initialize_weights(self):
-        # weight initialization
+    def init_params(self):
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
                 nn.init.kaiming_normal_(m.weight, mode='fan_out')
-                if m.bias is not None:
-                    nn.init.zeros_(m.bias)
+                if not m.bias is None:
+                    nn.init.constant_(m.bias, 0)
             elif isinstance(m, nn.BatchNorm2d):
-                nn.init.ones_(m.weight)
-                nn.init.zeros_(m.bias)
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)
             elif isinstance(m, nn.Linear):
-                nn.init.normal_(m.weight, 0, 0.01)
-                if m.bias is not None:
-                    nn.init.zeros_(m.bias)
+                nn.init.normal_(m.weight, mean=0.0, std=0.001)
+                if not m.bias is None:
+                    nn.init.constant_(m.bias, 0)
 
 
 def mobilenetv3(pretrained=False, **kwargs):
