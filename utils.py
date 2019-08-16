@@ -91,6 +91,12 @@ def get_network(args, use_gpu=True):
   elif args.model == 'mobilenetv2_big_prob2':
     from models_test.mobilenetv2 import mobilenetv2_big_prob2
     model = mobilenetv2_big_prob2()
+  elif args.model == 'mobilenetv3_small':
+    from models_test.mobilenetv3 import mobilenetv3
+    model = mobilenetv3(mode='small')
+  elif args.model == 'mobilenetv3_large':
+    from models_test.mobilenetv3 import mobilenetv3
+    model = mobilenetv3(mode='large')
   elif args.model == 'efficientnet':
     from models.efficientnet import efficientnet
     model = efficientnet()
