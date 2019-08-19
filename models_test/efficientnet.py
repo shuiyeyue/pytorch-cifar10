@@ -208,6 +208,7 @@ def test():
     print(model)
     out = model(x)
     print(out.size())
+    print("Param numbers: {}".format(sum(p.numel() for p in model.parameters()))) 
 
 if __name__ == '__main__':
     test()
