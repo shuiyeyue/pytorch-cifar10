@@ -97,9 +97,30 @@ def get_network(args, use_gpu=True):
   elif args.model == 'mobilenetv3_large':
     from models_test.mobilenetv3 import mobilenetv3
     model = mobilenetv3(mode='large')
-  elif args.model == 'efficientnet':
-    from models.efficientnet import efficientnet
-    model = efficientnet()
+  elif args.model == 'efficientnetb0':
+    from models_test.efficientnet import efficientnet_b0
+    model = efficientnet_b0()
+  elif args.model == 'efficientnetb1':
+    from models_test.efficientnet import efficientnet_b1
+    model = efficientnet_b1()
+  elif args.model == 'efficientnetb2':
+    from models_test.efficientnet import efficientnet_b2
+    model = efficientnet_b2()
+  elif args.model == 'efficientnetb3':
+    from models_test.efficientnet import efficientnet_b3
+    model = efficientnet_b3()
+  elif args.model == 'efficientnetb4':
+    from models_test.efficientnet import efficientnet_b4
+    model = efficientnet_b4()
+  elif args.model == 'efficientnetb5':
+    from models_test.efficientnet import efficientnet_b5
+    model = efficientnet_b5()
+  elif args.model == 'efficientnetb6':
+    from models_test.efficientnet import efficientnet_b6
+    model = efficientnet_b6()
+  elif args.model == 'efficientnetb7':
+    from models_test.efficientnet import efficientnet_b7
+    model = efficientnet_b7()
   else:
     print("modelwork is not supported.")
     sys.exit()
