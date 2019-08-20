@@ -50,8 +50,8 @@ class LinearBottleNeck(nn.Module):
                 Hswish(inplace=True),
                 nn.Conv2d(inps * t, inps * t, kernel_size=k, stride=stride, padding=int((k-1)/2), bias=False, groups=inps * t),
                 nn.BatchNorm2d(inps * t),
-                SEModule(inps * t),
                 Hswish(inplace=True),
+                SEModule(inps * t),
                 nn.Conv2d(inps * t, oups, kernel_size=1, bias=False),
                 nn.BatchNorm2d(oups),
             )
@@ -203,8 +203,8 @@ def efficientnet_b7(num_classes=100):
     return EfficientNet(num_classes=num_classes, width_coef=2.0, depth_coef=3.1, scale=600/224.)
 
 def test():
-    x = torch.FloatTensor(1, 3, 32, 32)
-    model = efficientnet_b7(num_classes=100)
+    x = torch.FloatTensor(1, 3, 224, 224)
+    model = efficientnet_b0(num_classes=1000)
     print(model)
     out = model(x)
     print(out.size())

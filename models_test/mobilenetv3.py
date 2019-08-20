@@ -101,8 +101,8 @@ class MobileBottleneck(nn.Module):
             # dw
             conv_layer(exp, exp, kernel, stride, padding, groups=exp, bias=False),
             norm_layer(exp),
-            SELayer(exp),
             nlin_layer(inplace=True),
+            SELayer(exp),
             # pw-linear
             conv_layer(exp, oup, 1, 1, 0, bias=False),
             norm_layer(oup),
@@ -116,7 +116,7 @@ class MobileBottleneck(nn.Module):
 
 
 class MobileNetV3(nn.Module):
-    def __init__(self, n_class=100, input_size=224, dropout=0.5, mode='small', width_mult=1.0):
+    def __init__(self, n_class=1000, input_size=224, dropout=0.5, mode='small', width_mult=1.0):
         super(MobileNetV3, self).__init__()
         input_channel = 16
         last_channel = 1280
@@ -145,7 +145,7 @@ class MobileNetV3(nn.Module):
             # refer to Table 2 in paper
             mobile_setting = [
                 # k, exp, c,  se,     nl,  s,
-                # [3, 16,  16,  True,  'RE', 2],
+                #[3, 16,  16,  True,  'RE', 2],
                 [3, 16,  16,  True,  'RE', 1],
                 [3, 72,  24,  False, 'RE', 2],
                 [3, 88,  24,  False, 'RE', 1],
@@ -227,16 +227,12 @@ class MobileNetV3(nn.Module):
 
 def mobilenetv3(pretrained=False, **kwargs):
     model = MobileNetV3(**kwargs)
-    if pretrained:
-        state_dict = torch.load('mobilenetv3_small_67.4.pth.tar')
-        model.load_state_dict(state_dict, strict=True)
-        # raise NotImplementedError
     return model
 
 
 
 if __name__ == "__main__":
-    model = mobilenetv3()
+    model = mobilenetv3(mode='small')
     print(model)
 
     inp = torch.randn(1,3,224,224)
