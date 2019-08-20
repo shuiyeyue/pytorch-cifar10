@@ -116,7 +116,7 @@ class MobileBottleneck(nn.Module):
 
 
 class MobileNetV3(nn.Module):
-    def __init__(self, n_class=1000, input_size=224, dropout=0.5, mode='small', width_mult=1.0):
+    def __init__(self, n_class=100, input_size=224, dropout=0.5, mode='small', width_mult=1.0):
         super(MobileNetV3, self).__init__()
         input_channel = 16
         last_channel = 1280
@@ -235,7 +235,7 @@ if __name__ == "__main__":
     model = mobilenetv3(mode='small')
     print(model)
 
-    inp = torch.randn(1,3,224,224)
+    inp = torch.randn(1,3,32,32)
     oup = model(inp)
     print(oup)
     print("Param numbers: {}".format(sum(p.numel() for p in model.parameters())))

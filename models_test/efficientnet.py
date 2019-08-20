@@ -204,7 +204,7 @@ def efficientnet_b7(num_classes=100):
 
 def test():
     x = torch.FloatTensor(1, 3, 224, 224)
-    model = efficientnet_b0(num_classes=1000)
+    model = efficientnet_b0(num_classes=100)
     print(model)
     out = model(x)
     print(out.size())
